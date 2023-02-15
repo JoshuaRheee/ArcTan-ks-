@@ -1,4 +1,4 @@
-# ArcTan-ks-
+# ArcTan(ks)
 Steps Needed to run
 1. Install Pip
 2. Install pygame

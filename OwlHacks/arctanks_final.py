@@ -10,6 +10,9 @@ import time
 import random
 import tkinter as tk
 import math
+from sympy import var
+from sympy import sympify
+
 
 #Currently only accepts basic functions: x - x^4, sin(x),cos(x),tan(x)
 
@@ -233,15 +236,17 @@ def mainGame():
 
     def fight(allyTank,enemyTank,increment,obstacles):
 
+        x = var('x')
+
         #coordinates of character
-        x = (width*(23/32))+(allyTank[0]*blockSize)-20
-        y = (height/2)-(allyTank[1]*blockSize)-20
+        charx = (width*(23/32))+(allyTank[0]*blockSize)-20
+        chary = (height/2)-(allyTank[1]*blockSize)-20
 
-        original_ball_x = x + 20
-        original_ball_y = y + 12
+        original_ball_x = charx + 20
+        original_ball_y = chary + 12
 
-        ball_x = x + 20
-        ball_y = y + 12
+        ball_x = charx + 20
+        ball_y = chary + 12
         #width and height of character
         vel = 2
 
@@ -251,8 +256,7 @@ def mainGame():
 
         y_cos = ball_y + 60
 
-        tan_right_bound = x + 100;
-
+        tan_right_bound = charx + 100;
 
         poly_x = 1
         poly_y = 200
@@ -306,52 +310,34 @@ def mainGame():
                             active = False
                         else:
                             user_text += event.unicode
-
+            
             collision = isCollision(enemyX, enemyY, ball_x, ball_y)
+            
+            
 
             if active == False:
-                if user_text == "x":
+                if user_text == "arctan(x)":
                     ball_x = x_dos + xval* 50
                     xval += .1
-                    ball_y = y_dos - xval * 50
-                elif user_text == "x^2":
+                    ball_y = y_dos - (math.atan(xval) * 50)
+                elif user_text == "log(x)":
+                    ball_x = x_dos + xval* 50
+                    xval += .1
+                    ball_y = y_dos - (math.log(xval) * 50 + 100)
+                else: 
+                    function = sympify(user_text)
                     ball_x = x_dos + xval * 50
                     xval += .1
-                    ball_y = y_dos - xval**2 * 50
-                elif user_text == "x^3":
-                    ball_x = x_dos + xval* 50
-                    xval += .1
-                    ball_y = y_dos - xval**3 * 50
-                elif user_text == "x^4":
-                    ball_x = x_dos + xval* 50
-                    xval += .1
-                    ball_y = y_dos - xval**4 * 50
-                elif user_text == "sin(x)":
-                    if (collision != True ):
-                        ball_x = x_dos + xval* 50
-                        xval += .1
-                        ball_y = y_dos - (math.sin(xval) * 50)
-                elif user_text == "cos(x)" and active == False:
-                    if (collision != True):
-                        ball_x = x_dos + xval* 50
-                        xval += .1
-                        ball_y = y_cos - (math.cos(xval) * 50)
-                elif user_text == "tan(x)":
-                    if (collision != True and (ball_x < tan_right_bound)):
-                        ball_x = x_dos + xval* 50
-                        xval += .1
-                        ball_y = y_dos - (math.tan(xval) * 50)
-                else:
-                    active = True
+                    ball_y = y_dos - float(function.subs(x,xval)) * 50
+                
 
-
+                
             if (collision != True and (ball_y <=  0 or ball_x >= width)):
                 count = 1
                 SCREEN.fill((0,0,0))
                 drawGrid(eval("level"+str(count)).increment)
                 ball_x = original_ball_x
                 ball_y = original_ball_y
-                poly_x = 1
 
                 xval = 0
                 active = True
@@ -367,13 +353,12 @@ def mainGame():
             pygame.draw.rect(SCREEN, color, input_rect, 2)
             text_surface = base_font.render(user_text, True, (255, 255, 255))
             SCREEN.blit(text_surface, (input_rect.x,input_rect.y+5))
-
             pygame.draw.circle(SCREEN, (255, 0, 0), (ball_x, ball_y), 5)
 
             #for i in obstacles:
                 #pygame.draw.rect(SCREEN, BLUE, pygame.Rect((width*(23/32)-i[2]*blockSize/2)+(i[0]*blockSize),(height/2)-(i[1]*blockSize),i[2]*blockSize,i[3]*blockSize),2,3)
 
-            player(x, y)
+            player(charx, chary)
             enemy(enemyX, enemyY)
             pygame.display.update()
     main()

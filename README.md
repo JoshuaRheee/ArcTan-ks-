@@ -3,7 +3,7 @@ Steps Needed to run
 1. Install Pip
 2. Install pygame
 3. Download the zip file of the game
-4. Open using IDLE. Make sure you are not running the program in a terminal, otherwise it will close immediately
+4. Open using IDLE. Make sure you are not running the program in a terminal
 
 
 Through the use of Python's library pygame, we created our game called Arctan(ks) during OwlHacks 2023.

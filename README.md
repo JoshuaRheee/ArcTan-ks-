@@ -11,7 +11,5 @@ This game was built with the purpose of higher education.
 The objective of our project was to create a math-based game that is both fun and educaational.
 The purpose of the game is to learn the different graphs of functions including polynomial, trigonemetric and linear functions.
 
-Here is an old demo of ArcTan(ks):
-https://youtu.be/pRGE-M97npE
-
-A new demo featuring all of it's updates will be published soon (as of 3/22/2023)
+Our Demo:
+https://youtu.be/HDYaUqNnNTw
